@@ -18,8 +18,20 @@ class ListaInvertidaView {
                 Comando: 'C'
             },
             {
+                Ação: 'Remover pessoa',
+                Comando: 'R'
+            },
+            {
                 Ação: 'Busca simples',
                 Comando: 'BS'
+            },
+            {
+                Ação: 'Busca composta',
+                Comando: 'BC'
+            },
+            {
+                Ação: 'Exibir todos dados',
+                Comando: 'T'
             }
         ]
         console.log('\n\n---------- Lista Invertida ----------\n\n\n');
@@ -31,6 +43,15 @@ class ListaInvertidaView {
                     break
                 case 'BS':
                     this.telaBuscaSimples();
+                    break
+                case 'BC':
+                    this.telaBuscaComposta();
+                    break
+                case 'R':
+                    this.telaRemoverPessoa();
+                    break
+                case 'T':
+                    this.telaExibirTudo();
                     break
                 default:
                     console.log('Comando não identificado!')
@@ -46,8 +67,28 @@ class ListaInvertidaView {
             busca.col = col;
             rl.question('Valor da busca: ', value => {
                 busca.value = value;
-                Controller.buscarSimplesPessoa(busca);
+                Controller.buscaSimplesPessoa(busca);
                 this.telaInicial();
+            })
+        })
+    }
+
+    telaBuscaComposta() {
+        let busca1 = {};
+        let busca2 = {};
+        console.log('\n\n--- Busca Composta ---\n\n\n')
+        rl.question('Coluna de dados 1: ', col => {
+            busca1.col = col;
+            rl.question('Valor da busca 1: ', value => {
+                busca1.value = value;
+                rl.question('Coluna de dados 2: ', col => {
+                    busca2.col = col;
+                    rl.question('Valor da busca 2: ', value => {
+                        busca2.value = value;
+                        Controller.buscaCompostaPessoa(busca1, busca2);
+                        this.telaInicial();
+                    })
+                })
             })
         })
     }
@@ -73,6 +114,20 @@ class ListaInvertidaView {
             });
         })
     }
+
+    telaRemoverPessoa() {
+        console.log('\n\n--- Remover pessoa ---\n\n\n')
+        rl.question("Id único: ", id => {
+            Controller.removerPessoa(id);
+            this.telaInicial();
+        });
+    }
+
+    telaExibirTudo() {
+        console.log('\n\n--- Exibir todos dados ---\n\n\n')
+        Controller.exibirTodosDados();
+        this.telaInicial();
+    }
 }
 
-const tela = new ListaInvertidaView()
+module.exports = ListaInvertidaView;
